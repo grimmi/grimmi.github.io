@@ -6,4 +6,42 @@ title: grimmi - on the internet!
     <h1>
         This is me, on the internet!
     </h1>
+
+    <h2>Using VS 2015 to develop ArcObjects with .NET</h2>
+    <p>
+        Because I wanted to try to make something useful for ArcCatalog, I decided to spend the ~100€ after a long search on esri's convoluted web presence.
+        (For reference: <a href="http://www.esri.com/software/arcgis/arcgis-for-personal-use">this is where you should look for that</a>. As long as you're just
+        playing around, you don't need one of those expensive developer subscriptions.)
+    </p>
+    <p>
+        First problem: ArcObjects 10.5 does not support VS 2017, you need to have VS 2015 (doesn't matter which version - all are fine) installed to get to use
+        the project templates. Okay, done (I had never uninstalled VS 2015 anyway).
+    </p>
+    <p>
+        Next up: Trying to build the template resulted in the following error message:
+        <quote>
+                "The ValidateAddInXMLTask task failed unexpectedly. System.IO.FileNotFoundException: <br>
+                Could not load file or assembly 'Microsoft.VisualStudio.Shell.12.0, Version=12.0.0.0, <br>
+                Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. <br>
+                The system cannot find the file specified."<br>
+        </quote>
+        Great. Why would it work right out of the box, right? Thankfully, esri has you covered:
+         <a href="https://support.esri.com/en/technical-article/000012659">in their knowledge base they describe a workaround</a>. Turns out, you don't just need
+         VS 2015, you need VS 2013 as well (of course, what else?!). Well, not the whole VS 2013, they only really need the shell which you can download from 
+         Microsoft separately. But don't try the link esri provides - that leads to a "sorry, this page no longer exists" page at microsoft. Thanks to <em>John Grabanski's comment</em>
+         on <a href="https://gis.stackexchange.com/a/182984/23448">this gis.stackexchange.com answer</a> I found 
+         <a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202013&wt.mc_id=o~msft~vscom~older-downloads">a working link.</a> I wrote this post while the shell was installing,
+         which leads me to the next point in this bizarre odyssey: You cannot install the file you just downloaded from Microsoft! 
+         You get some blurb about compatibility mode being on when you try to execute the setup. The solution? Rename the file... no, seriously. If you read the comment I linked to
+         above, you'll see that you have to rename the file for the setup to work. I don't even...
+    </p>
+    <p>
+        Alright, setup's done. I can't build in VS 2017 yet, but I'll look at that some other day. VS 2015 seems to work, though. After just a few simple steps:
+        <ul>
+            <li>install VS 2015 (any version)</li>
+            <li>download the VS 2013 shell from Microsoft: <a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202013&wt.mc_id=o~msft~vscom~older-downloads">download</a></li>
+            <li>rename the downloaded file to vssdk_full.exe and run it</li>
+        </ul>
+        Easy, right?
+    </p>
 </div><!-- /.blurb -->
