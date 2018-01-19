@@ -47,3 +47,8 @@ ul.posts {
 ul.posts li {
     list-style: none;
 }
+
+.error {
+    font-size: 1em;
+    color: rgb(124, 24, 24)(252, 158, 158);
+}
