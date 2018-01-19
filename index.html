@@ -19,12 +19,12 @@ title: grimmi - on the internet!
     </p>
     <p>
         Next up: Trying to build the template resulted in the following error message:
-        <quote>
+        <div class="quote">
                 "The ValidateAddInXMLTask task failed unexpectedly. System.IO.FileNotFoundException: <br>
                 Could not load file or assembly 'Microsoft.VisualStudio.Shell.12.0, Version=12.0.0.0, <br>
                 Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. <br>
                 The system cannot find the file specified."<br>
-        </quote>
+        </div>
         Great. Why would it work right out of the box, right? Thankfully, esri has you covered:
          <a href="https://support.esri.com/en/technical-article/000012659">in their knowledge base they describe a workaround</a>. Turns out, you don't just need
          VS 2015, you need VS 2013 as well (of course, what else?!). Well, not the whole VS 2013, they only really need the shell which you can download from 
