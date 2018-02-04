@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <title>al 2018</title>
+  <link href="./main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+  <h1>al</h1>
+<hr>
+
+  <h3><a href="#">Home</a> | <a href="#">Projects</a> | <a href="#">About</a></h3>
+
+  <h1>Missing MSHTML and msbuild</h1>
+
+<h3>2018-01-30</h3>
+
+<p>Just today I was faced with a curious case of builds failing on our build server. We run our commits through a <a href="https://jenkins.io">Jenkins</a> server, where we use <a href="https://cakebuild.net">Cake</a> to build our solutions. Which works fine most of the time. As I was coming into the office today, I saw all builds on a particular Jenkins node failing. (We have several nodes because we have to build our projects against specific versions of other software and don't want to handle that on one machine.)</p>
+
+<p>Normally, that's not that big a problem: Msbuild is usually quite generous with its feedback and problems are often reduced to some developer having forgotten to check in some files or missing a dependency. Not so this time. At the end of the log file, msbuild printed</p>
+
+<pre><code>708 warnings
+0 errors
+</code></pre>
+
+<h6>(please ignore the mass of warnings - I know, I know...)</h6>
+
+<p>but it still exited with 1 (signalling an error during the build process). First step is always to check the commit with which the failing began. Most of the time you see a <code>.csproj</code> file or similar, where you can guess the problem (as I said: most of the time missing references or stuff like that). This time it was nothing like that. Just plain old code changes - nothing that would touch the projects or solution files.</p>
+
+<p>Next step was to try to reproduce the problem locally on my development machine. Clean checkout from SVN, into Visual Studio and "rebuild solution". Nothing. That is, everything was working as expected. "Build succeeded".</p>
+
+<p>Problems that only arise on the build server are really not nice because they affect everyone checking in code and getting mails that the build failed. So, first step was to disable mails going out for each failed build (along with a message in our dev chat to please be careful while we're investigating the build problems). Ok, so let's have a bit more information, shall we?</p>
+
+<pre><code>msbuild.exe &lt;solution.sln&gt; /v:diag &gt;&gt; buildlog.log
+</code></pre>
+
+<p>The <code>/v:diag</code> tells msbuild to be as explicit as possible during the build (for a more detailed description, see <a href="https://msdn.microsoft.com/en-us/library/ms171470.aspx">msdn</a>). Because nobody wants to read 120MB of logs (really, that's what we got in the end), we pipe it into file for later analysis.</p>
+
+<blockquote>
+  <p>Aside: I did try <a href="http://msbuildlog.com/">MSBuild Log Viewer</a> and while it's a great tool, it wasn't really of help in this case.</p>
+</blockquote>
+
+<p>Okay, so we build the solution once more and log <em>everything</em> to a file. And in there, what to we find? Errors. Lots of them. It all starts with something like this:</p>
+
+<blockquote>
+  <p>MSB3283: The wrapper assembly for type library "MSHTML" was not found</p>
+</blockquote>
+
+<p>Okay, what? This was running just fine yesterday and today you suddenly cannot find some assembly (that's not part of our solution but a dll in the GAC). Then something clicked. When in RDP'ed into the build server to diagnose the problems, there was something like "we just updated windows for you" or something like that. A quick look into Windows Update confirms the suspicion: The build server installed a Windows update during the night. On this specific node we are running Windows 10 and apparently it decided to update to the Anniversary Update. Which broke our assembly reference. Okay, now with the name of the offending assembly and the knowledge of the Windows update, I was able to quickly find <a href="https://social.msdn.microsoft.com/Forums/en-US/a0f11e00-03f0-4fb0-9e7d-f90648812080/msb3283-the-wrapper-assembly-for-type-library-mshtml-was-not-found?forum=msbuild">this thread</a> which seemed to describe our problem exactly. And the solution worked: I just had to "repair" the VS 2015 installation on the build server and everything was back to green again. Later, I found other advice online that apparently it's enough to reregister the dll in the GAC with <code>regasm</code> but I did not try that.</p>
+
+<h3>Update 2018-02-03</h3>
+
+<p>Looking a bit further, a colleague of mine found out that you don't have to run the full repair for hours and hours, it seems to be enough to run the update that you can download <a href="https://msdn.microsoft.com/de-de/library/mt752379.aspx">here from Microsoft</a>. This runs in a few seconds and you're good to go.</p>
+
+
+  
+
+</body>
+</html>

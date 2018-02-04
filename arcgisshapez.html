@@ -1,0 +1,29 @@
+<html>
+
+<head>
+  <title>al 2018</title>
+  <link href="./main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+  <h1>al</h1>
+<hr>
+
+  <h3><a href="#">Home</a> | <a href="#">Projects</a> | <a href="#">About</a></h3>
+
+  <h1>Querying for z values in ArcObjects</h1>
+
+<h3>2018-01-27</h3>
+
+<p>This week at work we were looking for a way to filter on z-values of features. Suprisingly, this is not straightforward to do with ArcObjects. Querying x/y is simple: you just take a <code>SpatialFilter</code> and put your <code>IGeometry</code> into that, run that filter against your featureclass and you're done.</p>
+
+<p>But how do you do that when all you want to filter is z values? It seems the generally accepted approach is to extract the z values from the shape and save them in their own column in the database. We're doing that with some classes, but (I don't know why) apparently not in all of them.</p>
+
+<p>We shortly debated possible solutions like constructing some kind of 3D geometry and look at its intersection. Alas, that's not so simple and becomes a bit more involved if you want to support querying like <code>z &gt; 5 AND z &lt; 10 AND z NOT IN (7,8)</code>. We quickly came to the conclusion that there's no simple (and performant) way to execute this query, so for now we just don't allow our users to query for z values on tables where we don't store them in their own columns.</p>
+
+
+  
+
+</body>
+</html>

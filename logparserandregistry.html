@@ -1,0 +1,44 @@
+<html>
+
+<head>
+  <title>al 2018</title>
+  <link href="./main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+  <h1>al</h1>
+<hr>
+
+  <h3><a href="#">Home</a> | <a href="#">Projects</a> | <a href="#">About</a></h3>
+
+  <h1>Logparser and the registry</h1>
+
+<h3>2018-01-22</h3>
+
+<p>Recently at work I had the problem of having to clean the registry of hundreds (maybe thousands) of orphaned entries. Our software has to registry a load of COM libraries because of how we integrate with our parent application. Normally this isn't a big problem, you call <code>regasm /unregister</code> and everything's fine.</p>
+
+<p>That is unless you already built new versions over the dlls you once registered. Then you're out of luck because regasm won't remove the old entries from your registry. Luckily, our dlls and classes are all easily recognizable because they contain our company name in one way or another. So we go to <code>regedit</code>, hit <code>F3</code> and delete one entry after the other - wait, I did say we're talking about hundreds or thousands of those, right? Yeah, not gonna happen.</p>
+
+<p>What does the programmer do when he's faced with a repetitive job he has no motivation to do? He programs himself out of that corner. As a C# programmer, my first instinct was to use <a href="https://msdn.microsoft.com/en-us/library/microsoft.win32.registry(v=vs.110).aspx">the Registry class</a> and those connected to it. Simple, right? Just start at the top and recursively walk the registry tree until you find a key that contains the search term you're looking for and delete that. Yep, not really hard. But then I remembered reading about <a href="https://www.microsoft.com/en-us/download/details.aspx?id=24659">Log Parser</a>. Here's what microsoft has to say about it (emphasis mine):</p>
+
+<blockquote>
+  <p>Log parser is a powerful, versatile tool that provides universal query access to text-based data such as log files, XML files and CSV files, as well as key data sources on the Windows® operating system such as the Event Log, <strong>the Registry</strong>, the file system, and Active Directory®.</p>
+</blockquote>
+
+<p>Cool, so we just do a <code>SELECT * FROM HKEY_LOCAL_MACHINE WHERE value = searchTerm</code> and we're good. And that's it, basically. A quick search on <a href="https://stackoverflow.com">stackoverflow</a> gives us <a href="https://stackoverflow.com/a/295265/1344058">this answer</a> where it's laid out clearly how we should proceed.</p>
+
+<p>You start by creating an interop dll:</p>
+
+<pre><code>tlbimp "C:\Program Files\Log Parser 2.2\LogParser.dll" /out:Interop.MSUtil.dll
+</code></pre>
+
+<p>which you can then use in your C# code (details are in the answer).</p>
+
+<p>With this, we run our search through the registry and find ... 5429 items. Huh, I didn't think it would be that many. On to deleting then, I guess.</p>
+
+
+  
+
+</body>
+</html>
