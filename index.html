@@ -1,60 +1,118 @@
 <html>
 
 <head>
-    <title>look ma, i'm on the internet!</title>
-    <link rel="stylesheet" type="text/css" href="./css/main.css">
+  <title>al 2018</title>
+  <link href="./main.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <h1>It's me, on the internet!</h1>
 
-    <h3>Using VS 2015 to develop ArcObjects with .NET</h3>
-    <h4>2018-01-19</h4>
-    <p>
-        Because I wanted to try to make something useful for ArcCatalog, I decided to spend the ~100€ after a long search on esri's
-        convoluted web presence. (For reference:
-        <a href="http://www.esri.com/software/arcgis/arcgis-for-personal-use">this is where you should look for that</a>. As long as you're just playing around, you don't need one of those expensive
-        developer subscriptions.)
-    </p>
-    <p>
-        First problem: ArcObjects 10.5 does not support VS 2017, you need to have VS 2015 (doesn't matter which version - all are
-        fine) installed to get to use the project templates. Okay, done (I had never uninstalled VS 2015 anyway).
-    </p>
-    <p>
-        Next up: Trying to build the template resulted in the following error message:
-    </p>
+  <h1>al</h1>
+<hr>
 
-    <div class="error">
-        "The ValidateAddInXMLTask task failed unexpectedly. System.IO.FileNotFoundException:
-        Could not load file or assembly 'Microsoft.VisualStudio.Shell.12.0, Version=12.0.0.0,
-        Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies.
-        The system cannot find the file specified."
-    </div>
-    <p>
-        Great. Why would it work right out of the box, right? Thankfully, esri has you covered:
-        <a href="https://support.esri.com/en/technical-article/000012659">in their knowledge base they describe a workaround</a>. Turns out, you don't just need VS 2015, you need VS 2013
-        as well (of course, what else?!). Well, not the whole VS 2013, they only really need the shell which you can download
-        from Microsoft separately. But don't try the link esri provides - that leads to a "sorry, this page no longer exists"
-        page at microsoft. Thanks to
-        <em>John Grabanski's comment</em> on
-        <a href="https://gis.stackexchange.com/a/182984/23448">this gis.stackexchange.com answer</a> I found
-        <a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202013&amp;wt.mc_id=o~msft~vscom~older-downloads">a working link.</a> I wrote this post while the shell was installing, which leads me to the next point in this bizarre
-        odyssey: You cannot install the file you just downloaded from Microsoft! You get some blurb about compatibility mode
-        being on when you try to execute the setup. The solution? Rename the file... no, seriously. If you read the comment
-        I linked to above, you'll see that you have to rename the file for the setup to work. I don't even...
-    </p>
-    <p>
-        Alright, setup's done. I can't build in VS 2017 yet, but I'll look at that some other day. VS 2015 seems to work, though.
-        After just a few simple steps:
-        <ul>
-            <li>install VS 2015 (any version)</li>
-            <li>download the VS 2013 shell from Microsoft:
-                <a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202013&amp;wt.mc_id=o~msft~vscom~older-downloads">download</a>
-            </li>
-            <li>rename the downloaded file to vssdk_full.exe and run it</li>
-        </ul>
-        Easy, right?
-    </p>
+  <h3><a href="#">Home</a> | <a href="#">Projects</a> | <a href="#">About</a></h3>
+
+  <h1>Missing MSHTML and msbuild</h1>
+
+<h3>2018-01-30</h3>
+
+<p>Just today I was faced with a curious case of builds failing on our build server. We run our commits through a <a href="https://jenkins.io">Jenkins</a> server, where we use <a href="https://cakebuild.net">Cake</a> to build our solutions. Which works fine most of the time. As I was coming into the office today, I saw all builds on a particular Jenkins node failing. (We have several nodes because we have to build our projects against specific versions of other software and don't want to handle that on one machine.)</p>
+
+<p>Normally, that's not that big a problem: Msbuild is usually quite generous with its feedback and problems are often reduced to some developer having forgotten to check in some files or missing a dependency. Not so this time. At the end of the log file, msbuild printed</p>
+
+<pre><code>708 warnings
+0 errors
+</code></pre>
+
+<h6>(please ignore the mass of warnings - I know, I know...)</h6>
+
+<p>but it still exited with 1 (signalling an error during the build process). First step is always to check the commit with which the failing began. Most of the time you see a <code>.csproj</code> file or similar, where you can guess the problem (as I said: most of the time missing references or stuff like that). This time it was nothing like that. Just plain old code changes - nothing that would touch the projects or solution files.</p>
+
+<p>Next step was to try to reproduce the problem locally on my development machine. Clean checkout from SVN, into Visual Studio and "rebuild solution". Nothing. That is, everything was working as expected. "Build succeeded".</p>
+
+<p>Problems that only arise on the build server are really not nice because they affect everyone checking in code and getting mails that the build failed. So, first step was to disable mails going out for each failed build (along with a message in our dev chat to please be careful while we're investigating the build problems). Ok, so let's have a bit more information, shall we?</p>
+
+<pre><code>msbuild.exe &lt;solution.sln&gt; /v:diag &gt;&gt; buildlog.log
+</code></pre>
+
+<p>The <code>/v:diag</code> tells msbuild to be as explicit as possible during the build (for a more detailed description, see <a href="https://msdn.microsoft.com/en-us/library/ms171470.aspx">msdn</a>). Because nobody wants to read 120MB of logs (really, that's what we got in the end), we pipe it into file for later analysis.</p>
+
+<blockquote>
+  <p>Aside: I did try <a href="http://msbuildlog.com/">MSBuild Log Viewer</a> and while it's a great tool, it wasn't really of help in this case.</p>
+</blockquote>
+
+<p>Okay, so we build the solution once more and log <em>everything</em> to a file. And in there, what to we find? Errors. Lots of them. It all starts with something like this:</p>
+
+<blockquote>
+  <p>MSB3283: The wrapper assembly for type library "MSHTML" was not found</p>
+</blockquote>
+
+<p>Okay, what? This was running just fine yesterday and today you suddenly cannot find some assembly (that's not part of our solution but a dll in the GAC). Then something clicked. When in RDP'ed into the build server to diagnose the problems, there was something like "we just updated windows for you" or something like that. A quick look into Windows Update confirms the suspicion: The build server installed a Windows update during the night. On this specific node we are running Windows 10 and apparently it decided to update to the Anniversary Update. Which broke our assembly reference. Okay, now with the name of the offending assembly and the knowledge of the Windows update, I was able to quickly find <a href="https://social.msdn.microsoft.com/Forums/en-US/a0f11e00-03f0-4fb0-9e7d-f90648812080/msb3283-the-wrapper-assembly-for-type-library-mshtml-was-not-found?forum=msbuild">this thread</a> which seemed to describe our problem exactly. And the solution worked: I just had to "repair" the VS 2015 installation on the build server and everything was back to green again. Later, I found other advice online that apparently it's enough to reregister the dll in the GAC with <code>regasm</code> but I did not try that.</p>
+
+<h3>Update 2018-02-03</h3>
+
+<p>Looking a bit further, a colleague of mine found out that you don't have to run the full repair for hours and hours, it seems to be enough to run the update that you can download <a href="https://msdn.microsoft.com/de-de/library/mt752379.aspx">here from Microsoft</a>. This runs in a few seconds and you're good to go.</p>
+<h1>Querying for z values in ArcObjects</h1>
+
+<h3>2018-01-27</h3>
+
+<p>This week at work we were looking for a way to filter on z-values of features. Suprisingly, this is not straightforward to do with ArcObjects. Querying x/y is simple: you just take a <code>SpatialFilter</code> and put your <code>IGeometry</code> into that, run that filter against your featureclass and you're done.</p>
+
+<p>But how do you do that when all you want to filter is z values? It seems the generally accepted approach is to extract the z values from the shape and save them in their own column in the database. We're doing that with some classes, but (I don't know why) apparently not in all of them.</p>
+
+<p>We shortly debated possible solutions like constructing some kind of 3D geometry and look at its intersection. Alas, that's not so simple and becomes a bit more involved if you want to support querying like <code>z &gt; 5 AND z &lt; 10 AND z NOT IN (7,8)</code>. We quickly came to the conclusion that there's no simple (and performant) way to execute this query, so for now we just don't allow our users to query for z values on tables where we don't store them in their own columns.</p>
+<h1>Logparser and the registry</h1>
+
+<h3>2018-01-22</h3>
+
+<p>Recently at work I had the problem of having to clean the registry of hundreds (maybe thousands) of orphaned entries. Our software has to registry a load of COM libraries because of how we integrate with our parent application. Normally this isn't a big problem, you call <code>regasm /unregister</code> and everything's fine.</p>
+
+<p>That is unless you already built new versions over the dlls you once registered. Then you're out of luck because regasm won't remove the old entries from your registry. Luckily, our dlls and classes are all easily recognizable because they contain our company name in one way or another. So we go to <code>regedit</code>, hit <code>F3</code> and delete one entry after the other - wait, I did say we're talking about hundreds or thousands of those, right? Yeah, not gonna happen.</p>
+
+<p>What does the programmer do when he's faced with a repetitive job he has no motivation to do? He programs himself out of that corner. As a C# programmer, my first instinct was to use <a href="https://msdn.microsoft.com/en-us/library/microsoft.win32.registry(v=vs.110).aspx">the Registry class</a> and those connected to it. Simple, right? Just start at the top and recursively walk the registry tree until you find a key that contains the search term you're looking for and delete that. Yep, not really hard. But then I remembered reading about <a href="https://www.microsoft.com/en-us/download/details.aspx?id=24659">Log Parser</a>. Here's what microsoft has to say about it (emphasis mine):</p>
+
+<blockquote>
+  <p>Log parser is a powerful, versatile tool that provides universal query access to text-based data such as log files, XML files and CSV files, as well as key data sources on the Windows� operating system such as the Event Log, <strong>the Registry</strong>, the file system, and Active Directory�.</p>
+</blockquote>
+
+<p>Cool, so we just do a <code>SELECT * FROM HKEY_LOCAL_MACHINE WHERE value = searchTerm</code> and we're good. And that's it, basically. A quick search on <a href="https://stackoverflow.com">stackoverflow</a> gives us <a href="https://stackoverflow.com/a/295265/1344058">this answer</a> where it's laid out clearly how we should proceed.</p>
+
+<p>You start by creating an interop dll:</p>
+
+<pre><code>tlbimp "C:\Program Files\Log Parser 2.2\LogParser.dll" /out:Interop.MSUtil.dll
+</code></pre>
+
+<p>which you can then use in your C# code (details are in the answer).</p>
+
+<p>With this, we run our search through the registry and find ... 5429 items. Huh, I didn't think it would be that many. On to deleting then, I guess.</p>
+<h1>Using VS 2015 to develop ArcObjects with .NET</h1>
+
+<h3>2018-01-19</h3>
+
+<p>Because I wanted to try to make something useful for ArcCatalog, I decided to spend the ~100� after a long search on esri's convoluted web presence. (For reference: <a href="http://www.esri.com/software/arcgis/arcgis-for-personal-use">this is where you should look for that</a>. As long as you're just playing around, you don't need one of those expensive developer subscriptions.)</p>
+
+<p>First problem: ArcObjects 10.5 does not support VS 2017, you need to have VS 2015 (doesn't matter which version - all are fine) installed to get to use the project templates. Okay, done (I had never uninstalled VS 2015 anyway).</p>
+
+<p>Next up: Trying to build the template resulted in the following error message:</p>
+
+<blockquote>
+  <p>The ValidateAddInXMLTask task failed unexpectedly. System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.VisualStudio.Shell.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.</p>
+</blockquote>
+
+<p>Great. Why would it work right out of the box, right? Thankfully, esri has you covered: <a href="https://support.esri.com/en/technical-article/000012659">in their knowledge base they describe a workaround</a>. Turns out, you don't just need VS 2015, you need VS 2013 as well (of course, what else?!). Well, not the whole VS 2013, they only really need the shell which you can download from Microsoft separately. But don't try the link esri provides - that leads to a "sorry, this page no longer exists" page at microsoft. Thanks to <em>John Grabanski's</em> comment on <a href="https://gis.stackexchange.com/a/182984/23448">this gis.stackexchange.com answer</a> I found <a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202013&amp;wt.mc_id=o~msft~vscom~older-downloads">a working link</a>. I wrote this post while the shell was installing, which leads me to the next point in this bizarre odyssey: You cannot install the file you just downloaded from Microsoft! You get some blurb about compatibility mode being on when you try to execute the setup. The solution? Rename the file... no, seriously. If you read the comment I linked to above, you'll see that you have to rename the file for the setup to work. I don't even...</p>
+
+<p>Alright, setup's done. I can't build in VS 2017 yet, but I'll look at that some other day. VS 2015 seems to work, though. After just a few simple steps:</p>
+
+<ul>
+<li>install VS 2015 (any version)</li>
+<li>download the VS 2013 shell from Microsoft: <a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202013&amp;wt.mc_id=o~msft~vscom~older-downloads">download</a></li>
+<li>rename the downloaded file to vssdk_full.exe and run it</li>
+</ul>
+
+<p>Easy, right?</p>
+
+
+  
+
 </body>
-
 </html>
