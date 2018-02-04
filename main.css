@@ -1,0 +1,36 @@
+body{
+    color: #b1b1b1;
+    width: 70%;
+    background: #1d1d1d;
+    margin: auto;
+    font-family: sans-serif;
+    text-justify: distribute-all-lines;
+}
+
+blockquote{
+    background: #232323;
+    border-left: 5px solid #5d84bf;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+    font-style: italic;
+    font-family: monospace;
+}
+
+blockquote p{
+    display: inline;
+}
+
+hr{
+    color: #b1b1b1;
+    border-color: #b1b1b1;
+    background-color: #b1b1b1;
+}
+
+h1{
+    margin-bottom: -0.5em;
+}
+
+a{
+    text-decoration: none;
+    color: #5d84bf;
+}
