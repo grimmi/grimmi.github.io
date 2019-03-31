@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+	<channel>
+		<title>Kapitel im Leben eines Entwicklers</title>
+		<link>http://grimmi.github.io/</link>
+		<description>Stay a while and listen</description>
+		<copyright>2019</copyright>
+		<pubDate>Sun, 31 Mar 2019 20:28:47 GMT</pubDate>
+		<lastBuildDate>Sun, 31 Mar 2019 20:28:47 GMT</lastBuildDate>
+		<item>
+			<title>Epilog</title>
+			<link>http://grimmi.github.io/posts/epilog</link>
+			<description>&lt;p&gt;Diese Woche ist die letzte Woche bei meinem aktuellen Arbeitgeber. Meinem ersten "echten" Arbeitgeber. Meinem Arbeitgeber, bei dem ich auch meine Ausbildung gemacht habe. Das ist jetzt ca. 5 1/2 Jahre her.&lt;/p&gt;</description>
+			<guid>http://grimmi.github.io/posts/epilog</guid>
+			<pubDate>Sun, 31 Mar 2019 00:00:00 GMT</pubDate>
+			<content:encoded>&lt;p&gt;Diese Woche ist die letzte Woche bei meinem aktuellen Arbeitgeber. Meinem ersten &amp;quot;echten&amp;quot; Arbeitgeber. Meinem Arbeitgeber, bei dem ich auch meine Ausbildung gemacht habe. Das ist jetzt ca. 5 1/2 Jahre her.&lt;/p&gt;
+&lt;p&gt;Angefangen mit etwas Erfahrung aus einer SHK-Stelle als Entwickler und viel Enthusiasmus. In diesen fünf Jahren hat sich eine Menge getan - technisch in der .NET-Welt (.NET Core, .NET Standard, Xamarin, ...) aber vor allem in meiner Einstellung zum Job des Entwicklers. Wie die meisten Neulinge denkt man ja, es sei besonders wichtig, &amp;quot;toll programmieren&amp;quot; zu können. Besonders clevere Inkantationen von Methoden-Aufrufen ineinander zu verschlängeln und bloß keine Zeile zuviel zu virtuellem Papier zu bringen.&lt;/p&gt;
+&lt;p&gt;Während sich das noch relativ schnell gibt und man sich bemüht, Code zu schreiben, den die Kollegen auch reparieren können, kommt die eigentliche Einsicht erst mit der Zeit. Die Einsicht, die einem jeder bestätigen wird, der schon ein paar Jahre beruflich im Team entwickelt: Das eigentliche Programmieren ist gar nicht der essentielle Part des Jobs eines Entwicklers. Die wichtige Kompetenz eines Entwicklers ist die Kommunikation. Diese Kommunikation findet auf mehreren Ebenen statt:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;&lt;strong&gt;Code&lt;/strong&gt;&lt;/em&gt;: Durch Code kommuniziert man Absicht. Wenn ich meinen Code so strukturiere, dass sich allein aus der Abfolge der Aufrufe erkennen lässt, was er tut, dann tut der nächste Kollege sich leichter, in meinen Code einzuarbeiten.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;&lt;strong&gt;Dokumentation&lt;/strong&gt;&lt;/em&gt;: Zumindest bei uns war es gang und gebe, dass die Kollegen von Professional Services und Support zu uns kommen und sagen &amp;quot;sag mal, kann man eigentlich ...?&amp;quot; und die Antwort war natürlich: &amp;quot;Steht alles genau in der Entwickler-Doku&amp;quot;. Ok, schlechter Witz. Entweder kann der Entwickler noch aus dem Kopf sagen, was das Programm eigentlich machen oder man nuschelt die berüchtigten Worte &amp;quot;ich guck mal kurz im Code nach&amp;quot;. Dokumentation ist immer ein leidiges Thema, das irgendwie niemandem so recht Spaß macht (jedenfalls von den Leuten, die ich bisher getroffen habe). Ich merke gerade diese Tage, wo ich Übergaben meiner Entwicklung und Projekte an Kollegen mache, wie wichtig gute Dokumentation wäre. An vieles erinnere ich mich noch - zumindest was das Konzept angeht. Ganz viel ist aber auch in den Tiefen des SVN-Logs versteckt - wenn überhaupt.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;&lt;strong&gt;Gespräche mit Nicht-Entwickler-Kollegen&lt;/strong&gt;&lt;/em&gt;: Wir entwickeln unseren Code ja nicht im leeren Raum. In meinem alten Job habe ich Software für's Kanalmanagement geschrieben. Bevor ich da angefangen habe, hatte ich keine Ahnung von Siedlungswasserwirtschaft und was alles daran hängt. Wenn man aber keinen Kontext hat, in dem man seine Lösungen implementiert, dann wird man die eigentlichen (oft ungenannten, weil selbstverständlichen) Anforderungen des Kunden / des Anwenders nie zu 100% treffen. Ganz oft kann man Zeit und Nerven sparen, wenn man mit seinen Kollegen, die sich fachlich auskennen, mal über das neue Feature spricht, was das eigentlich soll und wie die Kunden das einsetzen.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;&lt;strong&gt;Gespräche im Entwickler-Team&lt;/strong&gt;&lt;/em&gt;: Eigentlich auch eine Selbstverständlichkeit sollte man denken. Leider nicht überall. Oft kam's mir in meinem alten Job vor, als würde ich völlig alleine arbeiten und nur alle zwei Wochen (wenn gepatcht wurde) in Kontakt mit meinen Kollegen treten. Ganz so schlimm war's natürlich nicht (man sieht sich ja zwangsweise, wenn man im selben Büro arbeitet), aber eine echte Team-Atmosphäre kam nicht auf. Was dann dazu führt dass Feature A zwei Wochen Entwicklungszeit benötigt an deren Ende man von einem Projektmanager hört &amp;quot;das haben wir doch letztes Jahr für Kunde X schon so ähnlich gemacht&amp;quot;. Neben der also vermeidbaren Doppel-Arbeit spart man sich aber auch viel Aufwand, wenn man seine Features mal mit den Kollegen daraufhin abklopft, in welchem anderen Kontext die noch einsetzbar wären.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Zu all diesen Punkten könnte man ganze Bücher schreiben (und erfahrenere Entwickler als ich haben das auch schon), ich will's hier an dieser Stelle erstmal dabei belassen.&lt;/p&gt;
+&lt;p&gt;Für mich geht's nächste Woche weiter mit einem neuen Buch - das ich hier schreiben möchte. Dieses hier schließe ich mit diesem Epilog (und vielleicht einem Epi-Epilog, mal sehen, was noch so aufkommt, wenn ich erstmal fertig bin).&lt;/p&gt;
+</content:encoded>
+		</item>
+		<item>
+			<title>First Post</title>
+			<link>http://grimmi.github.io/posts/first-post</link>
+			<description>&lt;p&gt;This is my first post!&lt;/p&gt;</description>
+			<guid>http://grimmi.github.io/posts/first-post</guid>
+			<pubDate>Fri, 01 Jan 2016 00:00:00 GMT</pubDate>
+			<content:encoded>&lt;p&gt;This is my first post!&lt;/p&gt;
+</content:encoded>
+		</item>
+	</channel>
+</rss>
