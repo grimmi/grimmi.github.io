@@ -5,8 +5,25 @@
 		<link>http://grimmi.github.io/</link>
 		<description>Stay a while and listen</description>
 		<copyright>2019</copyright>
-		<pubDate>Tue, 02 Apr 2019 18:40:01 GMT</pubDate>
-		<lastBuildDate>Tue, 02 Apr 2019 18:40:01 GMT</lastBuildDate>
+		<pubDate>Sat, 13 Apr 2019 06:49:45 GMT</pubDate>
+		<lastBuildDate>Sat, 13 Apr 2019 06:49:45 GMT</lastBuildDate>
+		<item>
+			<title>Visual Studio 2017 and .NET Core 2.2 SDK</title>
+			<link>http://grimmi.github.io/posts/vs2017netcoresdk22</link>
+			<description>&lt;p&gt;Gerade angefangen im neuen Job bin ich gerade dabei, mich durch die verschiedenen Projekte zu lesen. Eines der Projekte ist eine Web API geschrieben in ASP.NET Core. Als ich das Ding jetzt bauen wollte, hieß es erstmal, dass ich .NET Core installieren müsste.&lt;/p&gt;</description>
+			<guid>http://grimmi.github.io/posts/vs2017netcoresdk22</guid>
+			<pubDate>Wed, 10 Apr 2019 00:00:00 GMT</pubDate>
+			<content:encoded>&lt;p&gt;Gerade angefangen im neuen Job bin ich gerade dabei, mich durch die verschiedenen Projekte zu lesen. Eines der Projekte ist eine Web API geschrieben in ASP.NET Core. Als ich das Ding jetzt bauen wollte, hieß es erstmal, dass ich .NET Core installieren müsste.&lt;/p&gt;
+&lt;p&gt;Gesagt, getan - auf &lt;a href="http://get.dot.net"&gt;http://get.dot.net&lt;/a&gt; die 2.2-Version heruntergeladen, installiert, VS neu gestartet und ... geht trotzdem nicht. Fehlermeldung beim Build:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;The current .NET SDK does not support targeting .NET Core 2.2. Either target .NET Core 2.1 or lower, or use a version of the .NET SDK that supports .NET Core 2.2.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ja, hä? Ich habe doch gerade das SDK installiert. Was willst du von mir?&lt;/p&gt;
+&lt;p&gt;Twitter zur Hilfe! Zum Glück folge ich Kathleen Dollard auf Twitter und wie es der Zufall wollte, twitterte sie kurz nachdem ich das Problem erstmal beiseite gelegt hatte folgendes:&lt;/p&gt;
+&lt;?# Twitter 1115405961814896640 HideThread=true/?&gt;
+&lt;p&gt;Halleluja! Es hilft also, eine alte Version des 2.2-SDKs zu installieren. Genauer: eine 2.2.&lt;strong&gt;1&lt;/strong&gt;, nicht 2.2.&lt;strong&gt;2&lt;/strong&gt;. Mittlerweile ist das Problem wohl so oft aufgetreten, dass Microsoft auf der Download-Seite sehr deutlich darauf hinweist und einen &amp;quot;VS2017-kompatiblen&amp;quot; Download anbietet.&lt;/p&gt;
+&lt;p&gt;So leicht verliert man eben auch mal 2, 3 Stunden wegen unvollständigen Fehlermeldungen.&lt;/p&gt;
+</content:encoded>
+		</item>
 		<item>
 			<title>Epilog</title>
 			<link>http://grimmi.github.io/posts/epilog</link>
